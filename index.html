@@ -47,17 +47,7 @@
           <span>S</span>
           <span>O</span>
         </p>
-<audio controls>
-  <source src="audio/background-music.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-  <audio autoplay muted loop>
-  <source src="audio/background-music.mp3" type="audio/mpeg">
-    <button onclick="playMusic()">Play Music</button>
-<audio id="bgMusic">
-  <source src="audio/background-music.mp3" type="audio/mpeg">
-  <audio id="sound">
-  <source src="audio/click.mp3" type="audio/mpeg">
-</audio>
+
       </div>
       <div class="six">
         <img src="img/vector.jpg" alt="" class = "girl-dp" id="imagePath" />
@@ -145,4 +135,96 @@
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
   <script type="text/babel" src="script/main.js"></script>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Background Music</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    height: 200vh;
+    background: linear-gradient(#0f0f0f, #1a1a1a);
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  /* Floating music button */
+  #musicToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    background: #1db954;
+    color: black;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+</style>
+</head>
+
+<body>
+
+<h1 style="padding:20px;">Scroll or click anywhere 🎧</h1>
+
+<button id="musicToggle">▶</button>
+
+<audio id="bgMusic" loop>
+  <source src="audio/background-music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const music = document.getElementById("bgMusic");
+  const button = document.getElementById("musicToggle");
+
+  let hasInteracted = false;
+  let isPlaying = localStorage.getItem("musicState") === "playing";
+
+  // Restore previous state
+  if (isPlaying) {
+    button.textContent = "⏸";
+  }
+
+  function startMusic() {
+    if (!hasInteracted && isPlaying) {
+      music.play();
+      button.textContent = "⏸";
+    }
+    hasInteracted = true;
+    removeListeners();
+  }
+
+  function removeListeners() {
+    document.removeEventListener("click", startMusic);
+    document.removeEventListener("scroll", startMusic);
+    document.removeEventListener("touchstart", startMusic);
+  }
+
+  // First user interaction triggers music
+  document.addEventListener("click", startMusic);
+  document.addEventListener("scroll", startMusic);
+  document.addEventListener("touchstart", startMusic);
+
+  // Toggle button
+  button.addEventListener("click", () => {
+    if (music.paused) {
+      music.play();
+      button.textContent = "⏸";
+      localStorage.setItem("musicState", "playing");
+    } else {
+      music.pause();
+      button.textContent = "▶";
+      localStorage.setItem("musicState", "paused");
+    }
+  });
+</script>
+
+</body>
 </html>
