@@ -47,18 +47,20 @@
           <span>S</span>
           <span>O</span>
         </p>
- <button onclick="playMusic()">🎵 Play Music</button>
+<h2>Click anywhere to play music</h2>
 
 <audio id="bg-music" loop>
   <source src="music/background.mp3" type="audio/mpeg">
+  Your browser does not support audio.
 </audio>
 
 <script>
-  function playMusic() {
+  document.addEventListener("click", function () {
     const music = document.getElementById("bg-music");
-    music.play();
-  }
+    music.play().catch(err => console.log(err));
+  }, { once: true });
 </script>
+        
       </div>
       <div class="six">
         <img src="img/vector.jpg" alt="" class = "girl-dp" id="imagePath" />
